@@ -78,17 +78,17 @@
         "__id__": 52
       },
       {
-        "__id__": 74
+        "__id__": 75
       }
     ],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 75
+        "__id__": 76
       },
       {
-        "__id__": 76
+        "__id__": 77
       }
     ],
     "_prefab": null,
@@ -1871,7 +1871,11 @@
     ],
     "_active": true,
     "_level": 1,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 74
+      }
+    ],
     "_prefab": null,
     "_opacity": 255,
     "_color": {
@@ -2175,9 +2179,9 @@
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 2
+      "__id__": 52
     },
-    "component": "utils-canvas",
+    "component": "utils-schedule",
     "handler": "scheudleBtnCB",
     "customEventData": ""
   },
@@ -2464,9 +2468,9 @@
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 2
+      "__id__": 52
     },
-    "component": "utils-canvas",
+    "component": "utils-schedule",
     "handler": "removeStartTimeStorage",
     "customEventData": ""
   },
@@ -2810,11 +2814,21 @@
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 2
+      "__id__": 52
     },
-    "component": "Canvas",
-    "handler": "removeStartTimeStorage",
+    "component": "utils-schedule",
+    "handler": "startShceduleBtnCB",
     "customEventData": ""
+  },
+  {
+    "__type__": "65cccb/E49Ng4dPFx+yq4o5",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 52
+    },
+    "_enabled": true,
+    "_id": "31uJK1exNNZ4PHKFbWmmNH"
   },
   {
     "__type__": "cc.Node",

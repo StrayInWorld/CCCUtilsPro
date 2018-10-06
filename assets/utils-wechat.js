@@ -1,9 +1,11 @@
 module.exports = {
     //要写入缓存的值
     storageValueAry: [
-        { "name": "startTime", "num": null },
-        { "name": "scheduleTime", "num": 18000 }
+        { "name": "startTime", "num": null },      //开始倒计时的时间
+        { "name": "scheduleTime", "num": 18000 },  //倒计时总共时间
+        { "name": "isScheduleTime", "num": false } //是否开始倒计时
     ],
+
 
     /**
      * 判断是否为微信环境
@@ -11,57 +13,63 @@ module.exports = {
      */
     isRunWeChat() {
         if (CC_WECHATGAME) {
-            let context = [].shift.call(arguments);
-            let args = [].slice.call(arguments);    // 剩余的参数转为数组
-            context.bind(this)(args);
+            return true;
         }
         else {
             console.log("please run in wechat");
+            return false;
         }
     },
+
 
     /**
      * 设置初始缓存（异步）
      */
     setOriginStorage() {
-        for (let i = 0; i < this.storageValueAry.length; i++) {
-            let keyValue = this.storageValueAry[i].name;
-            let numValue = this.storageValueAry[i].num;
-            wx.getStorage({
-                key: keyValue,
-                success: function (res) {
-                    console.log("get origin storage success");
-                    return;
-                },
-                fail: function () {
-                    console.log("get storage fail");
-                    wx.setStorage({
-                        key: keyValue,
-                        data: "" + numValue,
-                        success: function () {
-                            console.log("set storage success");
-                        },
-                        fail: function () {
-                            console.log("set storage fail");
-                        }
-                    })
-                },
-                complete: function () {
+        if (this.isRunWeChat()) {
+            for (let i = 0; i < this.storageValueAry.length; i++) {
+                let keyValue = this.storageValueAry[i].name;
+                let numValue = this.storageValueAry[i].num;
+                wx.getStorage({
+                    key: keyValue,
+                    success: function (res) {
+                        console.log("get origin storage success");
+                        return;
+                    },
+                    fail: function () {
+                        console.log("get storage fail");
+                        wx.setStorage({
+                            key: keyValue,
+                            data: "" + numValue,
+                            success: function () {
+                                console.log("set storage success");
+                            },
+                            fail: function () {
+                                console.log("set storage fail");
+                            }
+                        })
+                    },
+                    complete: function () {
 
-                }
-            })
+                    }
+                })
+            }
+
         }
     },
+
 
     /**
      * 同步清除指定缓存Key
      * @param removeKey  要清除的缓存键
      */
     removeKeyStorageSync(removeKey) {
-        removeKey = arguments[0][0];
-        wx.removeStorageSync(removeKey);
-        console.log("removeKey:", removeKey);
+        if (this.isRunWeChat()) {
+            wx.removeStorageSync(removeKey);
+            console.log("removeKey:", removeKey);
+        }
     },
+
 
     /**
      * 同步获取指定缓存
@@ -69,22 +77,24 @@ module.exports = {
      * @returns  对应key的缓存值
      */
     getKeyStorageSync(getKey) {
-        getKey = arguments[0][0];
-        let value = wx.getStorageSync(getKey);
-        console.log("getKey:", value);
-        return value;
+        if (this.isRunWeChat()) {
+            let value = wx.getStorageSync(getKey);
+            console.log("getKey:",getKey,". result is:", value);
+            return value;
+        }
     },
+
 
     /**
      * 同步设置指定缓存
      * @param getKey  要获取的缓存键
      * @returns  对应key的缓存值
      */
-    setKeyStorageSync(setKey,keyValue) {
-        setKey = arguments[0][0];
-        keyValue = arguments[0][1];
-        let value = wx.setStorageSync(setKey,keyValue);
-        console.log("setKey:", value);    
+    setKeyStorageSync(setKey, keyValue) {
+        if (this.isRunWeChat()) {
+            wx.setStorageSync(setKey, keyValue);
+            console.log("setKey success,value is:", keyValue);
+        }
     },
 
 
@@ -94,7 +104,7 @@ module.exports = {
      * @returns {*} 格式化后的时分秒: 00:00:00
      */
     secToTime(s) {
-        var t;
+        var t = "";
         if (s > -1) {
             var hour = Math.floor(s / 3600);
             var min = Math.floor(s / 60) % 60;
