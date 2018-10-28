@@ -1,5 +1,6 @@
 /**
  * 获取权限按钮应该放在与开始按钮相同的位置。
+ * 还没有调好，应该有弹框的。
  */
 
 cc.Class({
@@ -31,7 +32,7 @@ cc.Class({
             let self = this;
             self.btnAuthorize = wx.createUserInfoButton({
                 type: 'text',
-                text: '',
+                text: '123',
                 style: {
                     left: left,
                     top: top,
@@ -58,6 +59,9 @@ cc.Class({
                     wx.showToast({ title: "授权失败" });
                 }
             });
+        }
+        else {
+            cc.log("get userInfo use in wechat");
         }
 
     },

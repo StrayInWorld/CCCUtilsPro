@@ -20,6 +20,10 @@ cc.Class({
         this.scheduleTimeText = this.scheduleTimeLabel.getComponent(cc.Label);
         // cc.log(this.scheduleTimeText);
 
+        this.removeStoButton.active = false;
+        this.scheduleTimeLabel.active = false;
+        this.startScheduleButton.active = false;
+
         //是否开始倒计时
         this.changeShceduleLabel();
     },
