@@ -1,10 +1,27 @@
-module.exports = {
-    //要写入缓存的值
-    storageValueAry: [
-        { "name": "startTime", "num": null },      //开始倒计时的时间
-        { "name": "scheduleTime", "num": 18000 },  //倒计时总共时间
-        { "name": "isScheduleTime", "num": false } //是否开始倒计时
-    ],
+let GlobalData = require("interface-config");
+
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+    },
+
+    // LIFE-CYCLE CALLBACKS:
+
+    onLoad() {
+        //要写入缓存的值
+        this.storageValueAry = [
+            { "name": "startTime", "num": null },      //开始倒计时的时间
+            { "name": "scheduleTime", "num": 18000 },  //倒计时总共时间
+            { "name": "isScheduleTime", "num": false } //是否开始倒计时
+        ];
+
+        this.appId = 'wxd4b382fb6d063d6e';
+    },
+
+    start() {
+
+    },
 
 
     /**
@@ -123,8 +140,10 @@ module.exports = {
         }
         return t;
     },
+
+    //分享
     wxShare(shareType) {
-        let appId = 'wxd4b382fb6d063d6e';
+        let appId = this.appId;
         let shareConfig = {};
         let defaultShareTitle = "帮我挪一挪";
         let defaultShartImg = canvas.toTempFilePathSync({
@@ -170,7 +189,56 @@ module.exports = {
                 }
             })
         }
+    },
+
+    //底部广告
+    showWXBanner() {
+        if (this.isRunWeChat()) {
+            let appUnitId = 'adunit-7613d8a09bcb9e95'
+            let winSize = wx.getSystemInfoSync();
+            console.log(winSize);
+            let bannerHeight = 80;
+            let bannerWidth = 300;
+            this._bannerAd = wx.createBannerAd({
+                adUnitId: appUnitId, //填写广告id 
+                style: {
+                    left: 0,
+                    top: winSize.windowHeight - bannerHeight,
+                    width: winSize.windowWidth,
+                }
+            });
+            this._bannerAd.show(); //banner 默认隐藏(hide) 要打开   
+            //微信缩放后得到banner的真实高度，从新设置banner的top 属性    
+            this._bannerAd.onResize(res => {
+                this._bannerAd.style.top = winSize.windowHeight - this._bannerAd.style.realHeight;
+
+            })
+        }
+    },
+
+    //视频广告
+    watchWXVieo() {
+        let _self = this;
+        let isRuning = false;
+        let appUnitId = 'adunit-791e60264d449d4a';
+
+        if (this.isRunWeChat()) {
+            let videoAd = wx.createRewardedVideoAd({
+                adUnitId: appUnitId
+            })
+
+            videoAd.load()
+                .then(() => videoAd.show())
+                .catch(err => console.log(err.errMsg))
+
+            videoAd.onClose(function (res) {
+                if (res.isEnded && !isRuning) {
+                    isRuning = true;
+                    console.log("videoAd is ended");
+                }
+
+            });
+        }
+
     }
-
-
-}
+});

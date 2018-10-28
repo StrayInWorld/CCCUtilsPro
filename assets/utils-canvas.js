@@ -1,4 +1,3 @@
-let WeChatUtil = require("utils-wechat");
 
 cc.Class({
     extends: cc.Component,

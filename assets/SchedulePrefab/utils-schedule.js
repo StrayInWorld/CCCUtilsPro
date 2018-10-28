@@ -1,3 +1,8 @@
+/**
+ * 下面的内容可能有问题。因为之前的utils-wechat 是一个js文件，
+ * 现在被改为一个组件。
+ */
+
 let WeChatUtil = require("utils-wechat");
 
 cc.Class({
@@ -10,7 +15,7 @@ cc.Class({
 
     onLoad() {
         //应该在所有的文件中只调用一次
-        WeChatUtil.setOriginStorage();
+        // WeChatUtil.setOriginStorage();
 
 
         this.scheduleTime = cc.find("Canvas/scheduleTime");
@@ -25,7 +30,7 @@ cc.Class({
         this.startScheduleButton.active = false;
 
         //是否开始倒计时
-        this.changeShceduleLabel();
+        // this.changeShceduleLabel();
     },
 
     start() {
