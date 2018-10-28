@@ -79,7 +79,7 @@ module.exports = {
     getKeyStorageSync(getKey) {
         if (this.isRunWeChat()) {
             let value = wx.getStorageSync(getKey);
-            console.log("getKey:",getKey,". result is:", value);
+            console.log("getKey:", getKey, ". result is:", value);
             return value;
         }
     },
@@ -122,6 +122,54 @@ module.exports = {
 
         }
         return t;
+    },
+    wxShare(shareType) {
+        let appId = 'wxd4b382fb6d063d6e';
+        let shareConfig = {};
+        let defaultShareTitle = "帮我挪一挪";
+        let defaultShartImg = canvas.toTempFilePathSync({
+            destWidth: 500,
+            destHeight: 400
+        });
+        let _self = this;
+
+        if (this.isRunWeChat()) {
+            wx.request({
+                url: GlobalData.ShareUrl,
+                data: {
+                    appid: appId,
+                    type: 1,
+                },
+                header: {
+                    'content-type': 'application/json'
+                },
+                success(res) {
+                    console.log("request share success", res);
+                    let data = res.data.item;
+                    shareConfig.title = data.share_title;
+                    shareConfig.image = GlobalData.ShareImgUrl + data.share_img;
+                },
+                fail() {
+                    console.log("request share fail");
+                    //获取不到，使用默认值
+                    shareConfig.title = defaultShareTitle;
+                    shareConfig.image = defaultShartImg;
+                },
+                complete() {
+                    wx.shareAppMessage({
+                        title: shareConfig.title,
+                        imageUrl: shareConfig.image,
+                        success: function () {
+                            console.log("shareAppMessage success");
+                        },
+                        fail: function () {
+                            console.log("shareAppMessage fail");
+                        }
+                    })
+
+                }
+            })
+        }
     }
 
 
