@@ -18,7 +18,7 @@ cc.Class({
         this.startScheduleButton = this.scheduleTime.getChildByName("startScheduleButton");
         this.scheduleTimeLabel = this.scheduleTime.getChildByName("scheduleTimeLabel");
         this.scheduleTimeText = this.scheduleTimeLabel.getComponent(cc.Label);
-        cc.log(this.scheduleTimeText);
+        // cc.log(this.scheduleTimeText);
 
         //是否开始倒计时
         this.changeShceduleLabel();
@@ -44,20 +44,20 @@ cc.Class({
         if (WeChatUtil.getKeyStorageSync(WeChatUtil.storageValueAry[2].name) === "true") {
             let startTime = WeChatUtil.getKeyStorageSync(WeChatUtil.storageValueAry[0].name);
             if (startTime === "null") {
-                startTime = new Date().getTime();        
+                startTime = new Date().getTime();
                 WeChatUtil.setKeyStorageSync(WeChatUtil.storageValueAry[0].name, "" + startTime);
             }
 
             let currentTime = new Date().getTime();
-            let passTime = (currentTime - Number(startTime))/1000;
+            let passTime = (currentTime - Number(startTime)) / 1000;
             let totalScheduleTime = WeChatUtil.getKeyStorageSync(WeChatUtil.storageValueAry[1].name);
             let lastTime = Math.floor(Number(totalScheduleTime) - passTime);
 
-            console.log("currentTime",currentTime);            
-            console.log("startTime",startTime);           
-            console.log("passTime",passTime);            
-            console.log("lastTime",lastTime);            
-            console.log("WeChatUtil.secToTime(lastTime)",WeChatUtil.secToTime(lastTime));            
+            console.log("currentTime", currentTime);
+            console.log("startTime", startTime);
+            console.log("passTime", passTime);
+            console.log("lastTime", lastTime);
+            console.log("WeChatUtil.secToTime(lastTime)", WeChatUtil.secToTime(lastTime));
             this.scheduleTimeText.string = WeChatUtil.secToTime(lastTime) + "";
 
             this.schedule(function () {
@@ -67,8 +67,8 @@ cc.Class({
             }, 1, cc.macro.REPEAT_FOREVER);
         }
     },
-    setScheduleString(){
-         console.log("123");
+    setScheduleString() {
+        console.log("123");
     },
     scheudleBtnCB() {
         this.removeStoButton.active = !this.removeStoButton.active;
